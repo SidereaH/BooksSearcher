@@ -1,0 +1,24 @@
+version: '3'
+services:
+  elasticsearch:
+    image: 'bitnami/elasticsearch:latest'
+    environment:
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=changeme
+    ports:
+      - '9200:9200'
+    volumes:
+      - esdata:/bitnami/elasticsearch/data
+
+  flask:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - elasticsearch
+    environment:
+      - FLASK_ENV=development
+
+volumes:
+  esdata:
+    driver: local
